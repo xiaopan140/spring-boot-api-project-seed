@@ -37,8 +37,8 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode("test");
-        //genCodeByCustomModelName("输入表名","输入自定义Model名称");
+        //genCode("tb_university_current_date_hour");
+        genCodeByCustomModelName("tb_university_current_date_hour","CurrentData");
     }
 
     /**
