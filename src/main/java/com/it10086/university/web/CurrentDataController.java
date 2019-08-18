@@ -25,7 +25,7 @@ public class CurrentDataController {
 
     @PostMapping("/byArea")
     public Result byArea(@RequestParam(defaultValue = "-1") Integer dataTime) {
-        List list = currentDataService.byArea(dataTime);
+        List<Map<String, Object>> list = currentDataService.byArea(dataTime);
         return ResultGenerator.genSuccessResult(list);
     }
 

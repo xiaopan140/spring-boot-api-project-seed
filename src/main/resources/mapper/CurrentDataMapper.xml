@@ -33,8 +33,9 @@
 
   <resultMap id="byUniversityMap" type="java.util.LinkedHashMap">
     <result column="data_time" property="dataTime" jdbcType="BIGINT" />
-    <result column="university_code" property="areaCode" jdbcType="VARCHAR" />
-    <result column="university_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="current_is_open" property="currentIsOpen" jdbcType="VARCHAR" />
     <result column="add_count" property="addCount" jdbcType="BIGINT" />
     <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
     <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
@@ -57,7 +58,7 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from ia.tb_university_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
     GROUP BY data_time,
              area_code,
              area_name
@@ -77,7 +78,7 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from ia.tb_university_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
         and area_code=#{areaCode}
     GROUP BY data_time,
              university_code,
