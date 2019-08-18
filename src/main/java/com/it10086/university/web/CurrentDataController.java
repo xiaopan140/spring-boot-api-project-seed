@@ -34,4 +34,10 @@ public class CurrentDataController {
         List<Map<String, Object>> list = currentDataService.byUniversity(dataTime,areaCode);
         return ResultGenerator.genSuccessResult(list);
     }
+
+    @PostMapping("/bySingalUniversity")
+    public Result bySingalUniversity(@RequestParam(defaultValue = "-1") Integer dataTime, @RequestParam() String universityCode) {
+        List<Map<String, Object>> list = currentDataService.bySingalUniversity(dataTime,universityCode);
+        return ResultGenerator.genSuccessResult(list);
+    }
 }

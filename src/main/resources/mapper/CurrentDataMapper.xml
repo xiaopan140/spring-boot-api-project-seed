@@ -44,6 +44,34 @@
     <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
     <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
   </resultMap>
+  <resultMap id="bySingalUniversityMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="current_is_open" property="currentIsOpen" jdbcType="VARCHAR" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="flow_30_rate" property="flow30Rate" jdbcType="DOUBLE" />
+    <result column="flow_20_rate" property="flow20Rate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+    <result column="plan_count" property="planCount" jdbcType="BIGINT" />
+    <result column="acc_add_count" property="accAddCount" jdbcType="BIGINT" />
+    <result column="acc_broadband_count" property="accBroadbandCount" jdbcType="BIGINT" />
+    <result column="acc_renewal_rate" property="accRenewalRate" jdbcType="DOUBLE" />
+    <result column="acc_flow_30_rate" property="accFlow30Rate" jdbcType="DOUBLE" />
+    <result column="acc_flow_20_rate" property="accFlow20Rate" jdbcType="DOUBLE" />
+    <result column="acc_assistant_rate" property="accAssistantRate" jdbcType="DOUBLE" />
+    <result column="acc_crm_rate" property="accCrmRate" jdbcType="DOUBLE" />
+    <result column="acc_new_rate" property="accNewRate" jdbcType="DOUBLE" />
+    <result column="qa_statis_day" jdbcType="BIGINT" property="QaStatisDay" />
+    <result column="qa_prepose_count" jdbcType="BIGINT" property="QaPreposeCount" />
+    <result column="qa_carry_number_count" jdbcType="BIGINT" property="QaCarryNumberCount" />
+    <result column="qa_communicate_rate" jdbcType="DOUBLE" property="QaCommunicateRate" />
+    <result column="qa_circle_rate" jdbcType="DOUBLE" property="QaCircleRate" />
+    <result column="qa_new_rate" jdbcType="DOUBLE" property="QaNewRate" />
+  </resultMap>
   <select id="byArea" resultMap="byAreaMap" parameterType="Integer">
     SELECT
       data_time,
@@ -84,5 +112,94 @@
              university_code,
              university_name,
              current_is_open
+  </select>
+  <select id="bySingalUniversity" resultMap="bySingalUniversityMap">
+    SELECT
+	a.data_time,
+	a.university_code,
+	a.university_name,
+	a.current_is_open,
+	a.add_count,
+	a.broadband_count,
+	a.renewal_rate,
+	a.flow_30_rate,
+	a.flow_20_rate,
+	a.assistant_rate,
+	a.crm_rate,
+	b.plan_count,
+	b.acc_add_count,
+	b.acc_broadband_count,
+	b.acc_renewal_rate,
+	b.acc_flow_30_rate,
+	b.acc_flow_20_rate,
+	b.acc_assistant_rate,
+	b.acc_crm_rate,
+	b.acc_new_rate,
+	c.statis_day as qa_statis_day,
+	c.qa_prepose_count,
+	c.qa_carry_number_count,
+	c.qa_communicate_rate,
+	c.qa_circle_rate,
+	c.qa_new_rate
+FROM (
+SELECT
+      data_time,
+      university_code,
+      university_name,
+      current_is_open,
+      sum(add_count) as add_count,
+      sum(broadband_count) as broadband_count,
+      round(sum(renewal_count)/sum(add_count),2) as renewal_rate,
+      round(sum(flow_30_count)/sum(add_count),2) as flow_30_rate,
+      round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
+      round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
+      round(sum(crm_count)/sum(add_count),2) as crm_rate
+    FROM tb_university_current_date_hour
+    WHERE
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
+        and university_code=#{universityCode}
+    GROUP BY data_time,
+             university_code,
+             university_name,
+             current_is_open
+) a LEFT JOIN (
+SELECT
+      data_time,
+      university_code,
+      university_name,
+      sum(plan_count) as plan_count,
+      sum(add_count) as acc_add_count,
+      sum(broadband_count) as acc_broadband_count,
+      round(sum(renewal_count)/sum(add_count),2) as acc_renewal_rate,
+      round(sum(flow_30_count)/sum(add_count),2) as acc_flow_30_rate,
+      round(sum(flow_20_count)/sum(add_count),2) as acc_flow_20_rate,
+      round(sum(assistant_count)/sum(add_count),2) as acc_assistant_rate,
+      round(sum(crm_count)/sum(add_count),2) as acc_crm_rate,
+      round(sum(add_count)/sum(plan_count)) as acc_new_rate
+    FROM tb_university_accumulate_current_date_hour
+    WHERE
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
+        and university_code=#{universityCode}
+    GROUP BY data_time,
+             university_code,
+             university_name
+) b ON a.data_time=b.data_time and a.university_code=b.university_code LEFT JOIN  (
+SELECT
+      statis_day,
+      university_code,
+      university_name,
+      sum(prepose_count) as qa_prepose_count,
+      sum(carry_number_count) as qa_carry_number_count,
+      round(sum(communicate_count)/sum(add_count),2) as qa_communicate_rate,
+      round(sum(circle_count)/sum(add_count),2) as qa_circle_rate,
+      round(sum(new_count)/sum(add_count),2) as qa_new_rate
+    FROM tb_university_qa_day
+    WHERE
+        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_university_qa_day) else #{dataTime}/10 end)
+        and university_code=#{universityCode}
+    GROUP BY statis_day,
+             university_code,
+             university_name
+) c ON b.university_code=c.university_code
   </select>
 </mapper>

@@ -30,4 +30,9 @@ public class CurrentDataServiceImpl extends AbstractService<CurrentData> impleme
     public List<Map<String, Object>> byUniversity(int dataTime, String areaCode) {
         return currentDataMapper.byUniversity(dataTime,areaCode);
     }
+
+    @Override
+    public List<Map<String, Object>> bySingalUniversity(int dataTime, String universityCode) {
+        return currentDataMapper.bySingalUniversity(dataTime,universityCode);
+    }
 }
