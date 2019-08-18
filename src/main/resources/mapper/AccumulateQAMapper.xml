@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it10086.university.dao.AccumulateQAMapper">
+  <resultMap id="BaseResultMap" type="com.it10086.university.model.AccumulateQA">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="statis_day" jdbcType="DATE" property="statisDay" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="university_code" jdbcType="VARCHAR" property="universityCode" />
+    <result column="university_name" jdbcType="VARCHAR" property="universityName" />
+    <result column="plan_count" jdbcType="BIGINT" property="planCount" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="prepose_count" jdbcType="BIGINT" property="preposeCount" />
+    <result column="carry_number_count" jdbcType="BIGINT" property="carryNumberCount" />
+    <result column="communicate_count" jdbcType="BIGINT" property="communicateCount" />
+    <result column="circle_count" jdbcType="BIGINT" property="circleCount" />
+    <result column="new_count" jdbcType="BIGINT" property="newCount" />
+    <result column="current_is_open" jdbcType="CHAR" property="currentIsOpen" />
+  </resultMap>
+  <resultMap id="byAreaMap" type="java.util.LinkedHashMap">
+    <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="plan_count" property="planCount" jdbcType="BIGINT" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="prepose_count" jdbcType="BIGINT" property="preposeCount" />
+    <result column="carry_number_count" jdbcType="BIGINT" property="carryNumberCount" />
+    <result column="communicate_rate" jdbcType="DOUBLE" property="communicateRate" />
+    <result column="circle_rate" jdbcType="DOUBLE" property="circleRate" />
+    <result column="new_rate" jdbcType="DOUBLE" property="newRate" />
+  </resultMap>
+
+  <resultMap id="byUniversityMap" type="java.util.LinkedHashMap">
+    <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="current_is_open" property="currentIsOpen" jdbcType="VARCHAR" />
+    <result column="plan_count" property="planCount" jdbcType="BIGINT" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="prepose_count" jdbcType="BIGINT" property="preposeCount" />
+    <result column="carry_number_count" jdbcType="BIGINT" property="carryNumberCount" />
+    <result column="communicate_rate" jdbcType="DOUBLE" property="communicateRate" />
+    <result column="circle_rate" jdbcType="DOUBLE" property="circleRate" />
+    <result column="new_rate" jdbcType="DOUBLE" property="newRate" />
+  </resultMap>
+  <select id="byArea" resultMap="byAreaMap">
+    SELECT
+      statis_day,
+      area_code,
+      area_name,
+      sum(plan_count) as plan_count,
+      sum(add_count) as add_count,
+      sum(prepose_count) as prepose_count,
+      sum(carry_number_count) as carry_number_count,
+      round(sum(communicate_count)/sum(add_count),2) as communicate_rate,
+      round(sum(circle_count)/sum(add_count),2) as circle_rate,
+      round(sum(new_count)/sum(add_count),2) as new_rate
+    FROM tb_university_qa_day
+    WHERE
+        statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_qa_day) else #{statisDay} end) and
+        (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
+    GROUP BY statis_day,
+             area_code,
+             area_name
+ </select>
+  <select id="byUniversity" resultMap="byUniversityMap">
+    SELECT
+      statis_day,
+      university_code,
+      university_name,
+      current_is_open,
+      sum(plan_count) as plan_count,
+      sum(add_count) as add_count,
+      sum(prepose_count) as prepose_count,
+      sum(carry_number_count) as carry_number_count,
+      round(sum(communicate_count)/sum(add_count),2) as communicate_rate,
+      round(sum(circle_count)/sum(add_count),2) as circle_rate,
+      round(sum(new_count)/sum(add_count),2) as new_rate
+    FROM tb_university_qa_day
+    WHERE
+        statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_qa_day) else #{statisDay} end)
+        and area_code=#{areaCode} and
+        (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
+    GROUP BY statis_day,
+             university_code,
+             university_name,
+             current_is_open
+  </select>
+</mapper>

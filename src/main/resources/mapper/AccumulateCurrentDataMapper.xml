@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it10086.university.dao.AccumulateCurrentDataMapper">
+  <resultMap id="BaseResultMap" type="com.it10086.university.model.AccumulateCurrentData">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="data_time" jdbcType="BIGINT" property="dataTime" />
+    <id column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <id column="university_code" jdbcType="VARCHAR" property="universityCode" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="university_name" jdbcType="VARCHAR" property="universityName" />
+    <result column="plan_count" jdbcType="BIGINT" property="planCount" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="broadboad_count" jdbcType="BIGINT" property="broadboadCount" />
+    <result column="renewal_count" jdbcType="DOUBLE" property="renewalCount" />
+    <result column="flow_30_count" jdbcType="DOUBLE" property="flow30Count" />
+    <result column="flow_20_count" jdbcType="DOUBLE" property="flow20Count" />
+    <result column="new_rate" jdbcType="DOUBLE" property="newRate" />
+    <result column="assistant_count" jdbcType="DOUBLE" property="assistantCount" />
+    <result column="crm_count" jdbcType="DOUBLE" property="crmCount" />
+    <result column="current_is_open" jdbcType="CHAR" property="currentIsOpen" />
+  </resultMap>
+
+  <resultMap id="byAreaMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="plan_count" property="planCount" jdbcType="BIGINT" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="flow_30_rate" property="flow30Rate" jdbcType="DOUBLE" />
+    <result column="flow_20_rate" property="flow20Rate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+    <result column="new_rate" property="newRate" jdbcType="DOUBLE" />
+
+  </resultMap>
+
+  <resultMap id="byUniversityMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="current_is_open" property="currentIsOpen" jdbcType="VARCHAR" />
+    <result column="plan_count" property="planCount" jdbcType="BIGINT" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="flow_30_rate" property="flow30Rate" jdbcType="DOUBLE" />
+    <result column="flow_20_rate" property="flow20Rate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+    <result column="new_rate" property="newRate" jdbcType="DOUBLE" />
+  </resultMap>
+  <select id="byArea" resultMap="byAreaMap">
+    SELECT
+      data_time,
+      area_code,
+      area_name,
+      sum(plan_count) as plan_count,
+      sum(add_count) as add_count,
+      sum(broadband_count) as broadband_count,
+      round(sum(renewal_count)/sum(add_count),2) as renewal_rate,
+      round(sum(flow_30_count)/sum(add_count),2) as flow_30_rate,
+      round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
+      round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
+      round(sum(crm_count)/sum(add_count),2) as crm_rate,
+      round(sum(add_count)/sum(plan_count)) as new_rate
+    FROM tb_university_accumulate_current_date_hour
+    WHERE
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end) and
+        (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
+    GROUP BY data_time,
+             area_code,
+             area_name
+ </select>
+  <select id="byUniversity" resultMap="byUniversityMap">
+    SELECT
+      data_time,
+      university_code,
+      university_name,
+      current_is_open,
+      sum(plan_count) as plan_count,
+      sum(add_count) as add_count,
+      sum(broadband_count) as broadband_count,
+      round(sum(renewal_count)/sum(add_count),2) as renewal_rate,
+      round(sum(flow_30_count)/sum(add_count),2) as flow_30_rate,
+      round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
+      round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
+      round(sum(crm_count)/sum(add_count),2) as crm_rate,
+      round(sum(add_count)/sum(plan_count)) as new_rate
+    FROM tb_university_accumulate_current_date_hour
+    WHERE
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
+        and area_code=#{areaCode} and
+        (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
+    GROUP BY data_time,
+             university_code,
+             university_name,
+             current_is_open
+  </select>
+</mapper>
