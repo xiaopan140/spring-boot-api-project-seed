@@ -86,7 +86,7 @@
           yd_rate,
           dx_rate,
           lt_rate
-      FROM tb_univesity_big_data_area_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_univesity_big_data_area_day)
+      FROM tb_university_big_data_area_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_university_big_data_area_day)
   </select>
   <select id="byAreaForApp" resultMap="byAreaForAppMap">
       SELECT
@@ -105,8 +105,8 @@
           cnt_xinwen,
           cnt_yinyue,
           cnt_youxi
-      FROM tb_univesity_big_data_area_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_area_day) else #{statisDay} end)
+      FROM tb_university_big_data_area_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_area_day) else #{statisDay} end)
   </select>
   <select id="byAreaForKeyMan" resultMap="byAreaForKeyManMap">
       SELECT
@@ -118,8 +118,8 @@
           penetration_rate,
           add_count,
           renewal_count
-      FROM tb_univesity_big_data_area_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_area_day) else #{statisDay} end)
+      FROM tb_university_big_data_area_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_area_day) else #{statisDay} end)
   </select>
   <select id="byAreaForRetention" resultMap="byAreaForRetentionMap">
       SELECT
@@ -129,7 +129,7 @@
           open_count,
           exceed_3days_count,
           long_period_count
-      FROM tb_univesity_big_data_area_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_area_day) else #{statisDay} end)
+      FROM tb_university_big_data_area_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_area_day) else #{statisDay} end)
   </select>
 </mapper>

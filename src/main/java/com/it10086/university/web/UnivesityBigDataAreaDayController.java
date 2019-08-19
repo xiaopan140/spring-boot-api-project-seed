@@ -18,7 +18,7 @@ import java.util.Map;
 * Created by CodeGenerator on 2019/08/19.
 */
 @RestController
-@RequestMapping("/univesity/big/data/area/day")
+@RequestMapping("/universityBigDataAreaDay")
 public class UnivesityBigDataAreaDayController {
     @Resource
     private UnivesityBigDataAreaDayService univesityBigDataAreaDayService;
@@ -39,7 +39,7 @@ public class UnivesityBigDataAreaDayController {
         return ResultGenerator.genSuccessResult(list);
     }
     @PostMapping("/byRentention")
-    public Result byRentention(@RequestParam(defaultValue = "-1") Integer statisDay,@RequestParam() String areaCode) {
+    public Result byRentention(@RequestParam(defaultValue = "-1") Integer statisDay) {
         List<Map<String, Object>> list = univesityBigDataAreaDayService.byAreaRetention(statisDay);
         return ResultGenerator.genSuccessResult(list);
     }

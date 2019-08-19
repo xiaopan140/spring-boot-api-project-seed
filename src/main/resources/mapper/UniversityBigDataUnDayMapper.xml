@@ -64,18 +64,18 @@
   </resultMap>
   <resultMap id="byUniversityForKeyManMap" type="java.util.LinkedHashMap">
       <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
-      <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
-      <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+      <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+      <result column="university_name" property="universityName" jdbcType="VARCHAR" />
       <result column="key_man_count" jdbcType="BIGINT" property="keyManCount" />
       <result column="self_key_man_count" jdbcType="BIGINT" property="selfKeyManCount" />
       <result column="penetration_rate" jdbcType="DOUBLE" property="penetrationRate" />
       <result column="add_count" jdbcType="BIGINT" property="addCount" />
       <result column="renewal_count" jdbcType="BIGINT" property="renewalCount" />
   </resultMap>
-  <resultMap id="byUniversityForRetention" type="java.util.LinkedHashMap">
+  <resultMap id="byUniversityForRetentionMap" type="java.util.LinkedHashMap">
       <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
-      <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
-      <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+      <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+      <result column="university_name" property="universityName" jdbcType="VARCHAR" />
       <result column="open_count" jdbcType="BIGINT" property="openCount" />
       <result column="exceed_3days_count" jdbcType="BIGINT" property="exceed3daysCount" />
       <result column="long_period_count" jdbcType="BIGINT" property="longPeriodCount" />
@@ -88,7 +88,7 @@
           yd_rate,
           dx_rate,
           lt_rate
-      FROM tb_univesity_big_data_un_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_univesity_big_data_un_day) AND
+      FROM tb_university_big_data_un_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_university_big_data_un_day) AND
       area_code=#{areaCode}
   </select>
   <select id="byUniversityForApp" resultMap="byUniversityForAppMap">
@@ -108,34 +108,34 @@
           cnt_xinwen,
           cnt_yinyue,
           cnt_youxi
-      FROM tb_univesity_big_data_un_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
       area_code=#{areaCode}
   </select>
   <select id="byUniversityForKeyMan" resultMap="byUniversityForKeyManMap">
       SELECT
           statis_day,
-          area_code,
-          area_name,
+          university_code,
+          university_name,
           key_man_count,
           self_key_man_count,
           penetration_rate,
           add_count,
           renewal_count
-      FROM tb_univesity_big_data_un_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
       area_code=#{areaCode}
   </select>
   <select id="byUniversityForRetention" resultMap="byUniversityForRetentionMap">
       SELECT
           statis_day,
-          area_code,
-          area_name,
+          university_code,
+          university_name,
           open_count,
           exceed_3days_count,
           long_period_count
-      FROM tb_univesity_big_data_un_day WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
       area_code=#{areaCode}
   </select>
 </mapper>
