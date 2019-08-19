@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it10086.university.dao.UniversityBigDataUnDayMapper">
+  <resultMap id="BaseResultMap" type="com.it10086.university.model.UniversityBigDataUnDay">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="statis_day" jdbcType="BIGINT" property="statisDay" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="university_code" jdbcType="VARCHAR" property="universityCode" />
+    <result column="university_name" jdbcType="VARCHAR" property="universityName" />
+    <result column="yd_count" jdbcType="BIGINT" property="ydCount" />
+    <result column="dx_count" jdbcType="BIGINT" property="dxCount" />
+    <result column="lt_count" jdbcType="BIGINT" property="ltCount" />
+    <result column="yd_rate" jdbcType="DOUBLE" property="ydRate" />
+    <result column="dx_rate" jdbcType="DOUBLE" property="dxRate" />
+    <result column="lt_rate" jdbcType="DOUBLE" property="ltRate" />
+    <result column="dou_shipin" jdbcType="VARCHAR" property="douShipin" />
+    <result column="dou_duanshipin" jdbcType="VARCHAR" property="douDuanshipin" />
+    <result column="dou_shejiao" jdbcType="VARCHAR" property="douShejiao" />
+    <result column="dou_xinwen" jdbcType="VARCHAR" property="douXinwen" />
+    <result column="dou_yinyue" jdbcType="VARCHAR" property="douYinyue" />
+    <result column="dou_youxi" jdbcType="VARCHAR" property="douYouxi" />
+    <result column="cnt_shipin" jdbcType="VARCHAR" property="cntShipin" />
+    <result column="cnt_duanshipin" jdbcType="VARCHAR" property="cntDuanshipin" />
+    <result column="cnt_shejiao" jdbcType="VARCHAR" property="cntShejiao" />
+    <result column="cnt_xinwen" jdbcType="VARCHAR" property="cntXinwen" />
+    <result column="cnt_yinyue" jdbcType="VARCHAR" property="cntYinyue" />
+    <result column="cnt_youxi" jdbcType="VARCHAR" property="cntYouxi" />
+    <result column="key_man_count" jdbcType="BIGINT" property="keyManCount" />
+    <result column="self_key_man_count" jdbcType="BIGINT" property="selfKeyManCount" />
+    <result column="penetration_rate" jdbcType="DOUBLE" property="penetrationRate" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="renewal_count" jdbcType="BIGINT" property="renewalCount" />
+    <result column="open_count" jdbcType="BIGINT" property="openCount" />
+    <result column="exceed_3days_count" jdbcType="BIGINT" property="exceed3daysCount" />
+    <result column="long_period_count" jdbcType="BIGINT" property="longPeriodCount" />
+  </resultMap>
+  <resultMap id="byUniversityForPortionMap" type="java.util.LinkedHashMap">
+     <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+     <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+     <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+     <result column="yd_rate" property="ydRate" jdbcType="VARCHAR" />
+     <result column="dx_rate" property="dxRate" jdbcType="BIGINT" />
+     <result column="lt_rate" jdbcType="BIGINT" property="ltRate" />
+  </resultMap>
+  <resultMap id="byUniversityForAppMap" type="java.util.LinkedHashMap">
+      <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+      <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+      <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+      <result column="dou_shipin" jdbcType="VARCHAR" property="douShipin" />
+      <result column="dou_duanshipin" jdbcType="VARCHAR" property="douDuanshipin" />
+      <result column="dou_shejiao" jdbcType="VARCHAR" property="douShejiao" />
+      <result column="dou_xinwen" jdbcType="VARCHAR" property="douXinwen" />
+      <result column="dou_yinyue" jdbcType="VARCHAR" property="douYinyue" />
+      <result column="dou_youxi" jdbcType="VARCHAR" property="douYouxi" />
+      <result column="cnt_shipin" jdbcType="VARCHAR" property="cntShipin" />
+      <result column="cnt_duanshipin" jdbcType="VARCHAR" property="cntDuanshipin" />
+      <result column="cnt_shejiao" jdbcType="VARCHAR" property="cntShejiao" />
+      <result column="cnt_xinwen" jdbcType="VARCHAR" property="cntXinwen" />
+      <result column="cnt_yinyue" jdbcType="VARCHAR" property="cntYinyue" />
+      <result column="cnt_youxi" jdbcType="VARCHAR" property="cntYouxi" />
+  </resultMap>
+  <resultMap id="byUniversityForKeyManMap" type="java.util.LinkedHashMap">
+      <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+      <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+      <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+      <result column="key_man_count" jdbcType="BIGINT" property="keyManCount" />
+      <result column="self_key_man_count" jdbcType="BIGINT" property="selfKeyManCount" />
+      <result column="penetration_rate" jdbcType="DOUBLE" property="penetrationRate" />
+      <result column="add_count" jdbcType="BIGINT" property="addCount" />
+      <result column="renewal_count" jdbcType="BIGINT" property="renewalCount" />
+  </resultMap>
+  <resultMap id="byUniversityForRetention" type="java.util.LinkedHashMap">
+      <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+      <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+      <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+      <result column="open_count" jdbcType="BIGINT" property="openCount" />
+      <result column="exceed_3days_count" jdbcType="BIGINT" property="exceed3daysCount" />
+      <result column="long_period_count" jdbcType="BIGINT" property="longPeriodCount" />
+  </resultMap>
+  <select id="byUniversityForPortion" resultMap="byUniversityForPortionMap">
+      SELECT
+          statis_day,
+          university_code,
+          university_name,
+          yd_rate,
+          dx_rate,
+          lt_rate
+      FROM tb_univesity_big_data_un_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_univesity_big_data_un_day) AND
+      area_code=#{areaCode}
+  </select>
+  <select id="byUniversityForApp" resultMap="byUniversityForAppMap">
+      SELECT
+          statis_day,
+          university_code,
+          university_name,
+          dou_shipin,
+          dou_duanshipin,
+          dou_shejiao,
+          dou_xinwen,
+          dou_yinyue,
+          dou_youxi,
+          cnt_shipin,
+          cnt_duanshipin,
+          cnt_shejiao,
+          cnt_xinwen,
+          cnt_yinyue,
+          cnt_youxi
+      FROM tb_univesity_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
+  </select>
+  <select id="byUniversityForKeyMan" resultMap="byUniversityForKeyManMap">
+      SELECT
+          statis_day,
+          area_code,
+          area_name,
+          key_man_count,
+          self_key_man_count,
+          penetration_rate,
+          add_count,
+          renewal_count
+      FROM tb_univesity_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
+  </select>
+  <select id="byUniversityForRetention" resultMap="byUniversityForRetentionMap">
+      SELECT
+          statis_day,
+          area_code,
+          area_name,
+          open_count,
+          exceed_3days_count,
+          long_period_count
+      FROM tb_univesity_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_univesity_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
+  </select>
+</mapper>

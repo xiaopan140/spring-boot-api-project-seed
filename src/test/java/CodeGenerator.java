@@ -38,7 +38,7 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         //genCode("tb_university_current_date_hour");
-        genCodeByCustomModelName("tb_university_qa_day","AccumulateQA");
+        genCodeByCustomModelName("tb_univesity_big_data_area_day","UnivesityBigDataAreaDay");
     }
 
     /**
