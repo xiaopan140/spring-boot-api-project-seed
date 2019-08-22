@@ -67,9 +67,9 @@
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate,
       round(sum(add_count)/sum(plan_count)) as new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else #{dataTime} end) and
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end) and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY data_time,
              area_code,
@@ -90,9 +90,9 @@
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate,
       round(sum(add_count)/sum(plan_count)) as new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
         and area_code=#{areaCode} and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY data_time,

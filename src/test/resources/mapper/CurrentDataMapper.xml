@@ -84,9 +84,9 @@
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
     GROUP BY data_time,
              area_code,
              area_name
@@ -104,9 +104,9 @@
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
         and area_code=#{areaCode}
     GROUP BY data_time,
              university_code,
@@ -154,9 +154,9 @@ SELECT
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
         and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
@@ -176,9 +176,9 @@ SELECT
       round(sum(assistant_count)/sum(add_count),2) as acc_assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as acc_crm_rate,
       round(sum(add_count)/sum(plan_count)) as acc_new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
         and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
@@ -193,9 +193,9 @@ SELECT
       round(sum(communicate_count)/sum(add_count),2) as qa_communicate_rate,
       round(sum(circle_count)/sum(add_count),2) as qa_circle_rate,
       round(sum(new_count)/sum(add_count),2) as qa_new_rate
-    FROM tb_mk_2019_school_prom_info_list_day
+    FROM tb_university_qa_day
     WHERE
-        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{dataTime}/10 end)
+        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_university_qa_day) else #{dataTime}/10 end)
         and university_code=#{universityCode}
     GROUP BY statis_day,
              university_code,

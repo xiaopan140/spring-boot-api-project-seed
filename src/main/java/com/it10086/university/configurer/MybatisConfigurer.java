@@ -26,7 +26,10 @@ public class MybatisConfigurer {
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
         factory.setDataSource(dataSource);
         factory.setTypeAliasesPackage(MODEL_PACKAGE);
-
+        // 解决空值省略问题
+        org.apache.ibatis.session.Configuration  configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setCallSettersOnNulls(true);
+        factory.setConfiguration(configuration);
         //配置分页插件，详情请查阅官方文档
         PageHelper pageHelper = new PageHelper();
         Properties properties = new Properties();
