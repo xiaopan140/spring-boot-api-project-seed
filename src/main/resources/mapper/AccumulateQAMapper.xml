@@ -61,9 +61,11 @@
     WHERE
         statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{statisDay} end) and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
+        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
     GROUP BY statis_day,
              area_code,
              area_name
+    order by area_code
  </select>
   <select id="byUniversity" resultMap="byUniversityMap">
     SELECT
@@ -81,7 +83,7 @@
     FROM tb_mk_2019_school_prom_info_list_day
     WHERE
         statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{statisDay} end)
-        and area_code=#{areaCode} and
+        and trim(area_code)=#{areaCode} and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY statis_day,
              university_code,

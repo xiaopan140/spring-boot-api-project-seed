@@ -22,8 +22,8 @@ public class AccumulateQAServiceImpl extends AbstractService<AccumulateQA> imple
     private AccumulateQAMapper accumulateQAMapper;
 
     @Override
-    public List<Map<String, Object>> byArea(int statisDay, String isOpenData) {
-        return accumulateQAMapper.byArea(statisDay,isOpenData);
+    public List<Map<String, Object>> byArea(int statisDay, String isOpenData,String authCode) {
+        return accumulateQAMapper.byArea(statisDay,isOpenData,authCode);
     }
 
     @Override

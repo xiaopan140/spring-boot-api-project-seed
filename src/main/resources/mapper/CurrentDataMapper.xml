@@ -72,7 +72,7 @@
     <result column="qa_circle_rate" jdbcType="DOUBLE" property="QaCircleRate" />
     <result column="qa_new_rate" jdbcType="DOUBLE" property="QaNewRate" />
   </resultMap>
-  <select id="byArea" resultMap="byAreaMap" parameterType="Integer">
+  <select id="byArea" resultMap="byAreaMap">
     SELECT
       data_time,
       area_code,
@@ -86,10 +86,12 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_mk_2019_school_prom_report_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
     GROUP BY data_time,
              area_code,
              area_name
+    ORDER BY area_code
  </select>
   <select id="byUniversity" resultMap="byUniversityMap">
     SELECT
@@ -106,12 +108,13 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_mk_2019_school_prom_report_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
-        and area_code=#{areaCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and trim(area_code)=#{areaCode}
     GROUP BY data_time,
              university_code,
              university_name,
              current_is_open
+     ORDER BY current_is_open DESC
   </select>
   <select id="bySingalUniversity" resultMap="bySingalUniversityMap">
     SELECT
@@ -156,8 +159,8 @@ SELECT
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_mk_2019_school_prom_report_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else #{dataTime} end)
-        and university_code=#{universityCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and trim(university_code)=#{universityCode}
     GROUP BY data_time,
              university_code,
              university_name,
@@ -178,12 +181,12 @@ SELECT
       round(sum(add_count)/sum(plan_count)) as acc_new_rate
     FROM tb_mk_2019_school_prom_report_list_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else #{dataTime} end)
-        and university_code=#{universityCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and trim(university_code)=#{universityCode}
     GROUP BY data_time,
              university_code,
              university_name
-) b ON a.data_time=b.data_time and a.university_code=b.university_code LEFT JOIN  (
+) b ON a.data_time=b.data_time and trim(a.university_code)=trim(b.university_code) LEFT JOIN  (
 SELECT
       statis_day,
       university_code,
@@ -195,11 +198,11 @@ SELECT
       round(sum(new_count)/sum(add_count),2) as qa_new_rate
     FROM tb_mk_2019_school_prom_info_list_day
     WHERE
-        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{dataTime}/10 end)
-        and university_code=#{universityCode}
+        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{dataTime} end)
+        and trim(university_code)=#{universityCode}
     GROUP BY statis_day,
              university_code,
              university_name
-) c ON b.university_code=c.university_code
+) c ON trim(b.university_code)=trim(c.university_code)
   </select>
 </mapper>

@@ -22,22 +22,22 @@ public class UnivesityBigDataAreaDayServiceImpl extends AbstractService<Univesit
     private UnivesityBigDataAreaDayMapper univesityBigDataAreaDayMapper;
 
     @Override
-    public List<Map<String, Object>> byAreaForPortion() {
-        return univesityBigDataAreaDayMapper.byAreaForPortion();
+    public List<Map<String, Object>> byAreaForPortion(String authCode) {
+        return univesityBigDataAreaDayMapper.byAreaForPortion(authCode);
     }
 
     @Override
-    public List<Map<String, Object>> byAreaForApp(int statisDay) {
-        return univesityBigDataAreaDayMapper.byAreaForApp(statisDay);
+    public List<Map<String, Object>> byAreaForApp(int statisDay,String authCode) {
+        return univesityBigDataAreaDayMapper.byAreaForApp(statisDay,authCode);
     }
 
     @Override
-    public List<Map<String, Object>> byAreaForKeyMan(int statisDay) {
-        return univesityBigDataAreaDayMapper.byAreaForKeyMan(statisDay);
+    public List<Map<String, Object>> byAreaForKeyMan(int statisDay,String authCode) {
+        return univesityBigDataAreaDayMapper.byAreaForKeyMan(statisDay,authCode);
     }
 
     @Override
-    public List<Map<String, Object>> byAreaRetention(int statisDay) {
-        return univesityBigDataAreaDayMapper.byAreaForRetention(statisDay);
+    public List<Map<String, Object>> byAreaRetention(int statisDay,String authCode) {
+        return univesityBigDataAreaDayMapper.byAreaForRetention(statisDay,authCode);
     }
 }

@@ -86,7 +86,7 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
     GROUP BY data_time,
              area_code,
              area_name
@@ -106,7 +106,7 @@
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
         and area_code=#{areaCode}
     GROUP BY data_time,
              university_code,
@@ -156,7 +156,7 @@ SELECT
       round(sum(crm_count)/sum(add_count),2) as crm_rate
     FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
         and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
@@ -178,7 +178,7 @@ SELECT
       round(sum(add_count)/sum(plan_count)) as acc_new_rate
     FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
         and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
@@ -195,7 +195,7 @@ SELECT
       round(sum(new_count)/sum(add_count),2) as qa_new_rate
     FROM tb_university_qa_day
     WHERE
-        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_university_qa_day) else #{dataTime}/10 end)
+        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_university_qa_day) else #{dataTime} end)
         and university_code=#{universityCode}
     GROUP BY statis_day,
              university_code,

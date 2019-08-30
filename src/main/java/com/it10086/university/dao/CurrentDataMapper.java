@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface CurrentDataMapper extends Mapper<CurrentData> {
-    public abstract List<Map<String, Object>> byArea(@Param("dataTime") int dataTime);
+    public abstract List<Map<String, Object>> byArea(@Param("dataTime") int dataTime,@Param("authCode") String authCode);
     public abstract List<Map<String, Object>> byUniversity(@Param("dataTime") int dataTime,@Param("areaCode") String areaCode);
     public abstract List<Map<String, Object>> bySingalUniversity(@Param("dataTime") int dataTime,@Param("universityCode") String universityCode);
 }

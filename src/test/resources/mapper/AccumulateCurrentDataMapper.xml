@@ -69,7 +69,7 @@
       round(sum(add_count)/sum(plan_count)) as new_rate
     FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end) and
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end) and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY data_time,
              area_code,
@@ -92,7 +92,7 @@
       round(sum(add_count)/sum(plan_count)) as new_rate
     FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
         and area_code=#{areaCode} and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY data_time,

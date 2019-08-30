@@ -22,8 +22,8 @@ public class CurrentDataServiceImpl extends AbstractService<CurrentData> impleme
     private CurrentDataMapper currentDataMapper;
 
     @Override
-    public List<Map<String, Object>> byArea(int dataTime) {
-        return currentDataMapper.byArea(dataTime);
+    public List<Map<String, Object>> byArea(int dataTime,String authCode) {
+        return currentDataMapper.byArea(dataTime,authCode);
     }
 
     @Override

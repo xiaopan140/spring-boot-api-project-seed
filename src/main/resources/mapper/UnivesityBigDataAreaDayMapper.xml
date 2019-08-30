@@ -87,6 +87,8 @@
           dx_rate,
           lt_rate
       FROM tb_school_2019_moni_region_result WHERE statis_day= (SELECT MAX(statis_day) FROM tb_school_2019_moni_region_result)
+      and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+      order by area_code
   </select>
   <select id="byAreaForApp" resultMap="byAreaForAppMap">
       SELECT
@@ -107,6 +109,8 @@
           cnt_youxi
       FROM tb_school_2019_moni_region_result WHERE
       statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_region_result) else #{statisDay} end)
+      and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+      order by area_code
   </select>
   <select id="byAreaForKeyMan" resultMap="byAreaForKeyManMap">
       SELECT
@@ -115,11 +119,13 @@
           area_name,
           key_man_count,
           self_key_man_count,
-          penetration_rate,
+          round(cast(penetration_rate as numeric),2) as penetration_rate,
           add_count,
           renewal_count
       FROM tb_school_2019_moni_region_result WHERE
       statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_region_result) else #{statisDay} end)
+      and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+      order by area_code
   </select>
   <select id="byAreaForRetention" resultMap="byAreaForRetentionMap">
       SELECT
@@ -131,5 +137,7 @@
           long_period_count
       FROM tb_school_2019_moni_region_result WHERE
       statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_region_result) else #{statisDay} end)
+      and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+      order by area_code
   </select>
 </mapper>

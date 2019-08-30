@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AccumulateQAMapper extends Mapper<AccumulateQA> {
-    public abstract List<Map<String, Object>> byArea(@Param("statisDay") int statisDay, @Param("isOpenData") String isOpenData);
+    public abstract List<Map<String, Object>> byArea(@Param("statisDay") int statisDay, @Param("isOpenData") String isOpenData,@Param("authCode") String authCode);
     public abstract List<Map<String, Object>> byUniversity(@Param("statisDay") int statisDay,@Param("areaCode") String areaCode,@Param("isOpenData") String isOpenData);
 
 }

@@ -22,8 +22,8 @@ public class AccumulateCurrentDataServiceImpl extends AbstractService<Accumulate
     private AccumulateCurrentDataMapper accumulateCurrentDataMapper;
 
     @Override
-    public List<Map<String, Object>> byArea(int dataTime,String isOpenData) {
-        return accumulateCurrentDataMapper.byArea(dataTime,isOpenData);
+    public List<Map<String, Object>> byArea(int dataTime,String isOpenData,String authCode) {
+        return accumulateCurrentDataMapper.byArea(dataTime,isOpenData,authCode);
     }
 
     @Override
