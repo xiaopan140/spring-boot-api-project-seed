@@ -18,7 +18,7 @@ import java.util.Map;
 * Created by CodeGenerator on 2019/08/17.
 */
 @RestController
-@RequestMapping("/currentData")
+@RequestMapping("/currentDataOld")
 public class CurrentDataController {
     @Resource
     private CurrentDataService currentDataService;

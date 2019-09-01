@@ -20,7 +20,7 @@ public class CodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
     private static final String JDBC_URL = "jdbc:postgresql://127.0.0.1:5432/test?currentSchema=ia";
     private static final String JDBC_USERNAME = "postgres";
-    private static final String JDBC_PASSWORD = "gaorui";
+    private static final String JDBC_PASSWORD = "123456";
     private static final String JDBC_DIVER_CLASS_NAME = "org.postgresql.Driver";
 
     private static final String PROJECT_PATH = System.getProperty("user.dir");//项目在硬盘上的基础路径
@@ -38,7 +38,7 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         //genCode("tb_university_current_date_hour");
-        genCodeByCustomModelName("tb_univesity_big_data_area_day","UnivesityBigDataAreaDay");
+        genCodeByCustomModelName("tb_university_accumunate_byarea_day","UniversityAccumunateByAreaDay");
     }
 
     /**

@@ -67,16 +67,13 @@
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate,
       round(sum(add_count)/sum(plan_count)) as new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end) and
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end) and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
-        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
-
     GROUP BY data_time,
              area_code,
              area_name
-     ORDER BY area_code
  </select>
   <select id="byUniversity" resultMap="byUniversityMap">
     SELECT
@@ -93,10 +90,10 @@
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate,
       round(sum(add_count)/sum(plan_count)) as new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
-        and trim(area_code)=#{areaCode} and
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and area_code=#{areaCode} and
         (case when #{isOpenData}='-1' then current_is_open is not null else  current_is_open=#{isOpenData} end)
     GROUP BY data_time,
              university_code,

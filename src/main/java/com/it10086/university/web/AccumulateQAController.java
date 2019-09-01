@@ -18,7 +18,7 @@ import java.util.Map;
 * Created by CodeGenerator on 2019/08/18.
 */
 @RestController
-@RequestMapping("/accumulateQA")
+@RequestMapping("/accumulateQAOld")
 public class AccumulateQAController {
     @Resource
     private AccumulateQAService accumulateQAService;

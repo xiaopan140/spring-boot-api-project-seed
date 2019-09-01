@@ -72,7 +72,7 @@
     <result column="qa_circle_rate" jdbcType="DOUBLE" property="QaCircleRate" />
     <result column="qa_new_rate" jdbcType="DOUBLE" property="QaNewRate" />
   </resultMap>
-  <select id="byArea" resultMap="byAreaMap">
+  <select id="byArea" resultMap="byAreaMap" parameterType="Integer">
     SELECT
       data_time,
       area_code,
@@ -84,14 +84,12 @@
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
-        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
     GROUP BY data_time,
              area_code,
              area_name
-    ORDER BY area_code
  </select>
   <select id="byUniversity" resultMap="byUniversityMap">
     SELECT
@@ -106,15 +104,14 @@
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
-        and trim(area_code)=#{areaCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and area_code=#{areaCode}
     GROUP BY data_time,
              university_code,
              university_name,
              current_is_open
-     ORDER BY current_is_open DESC
   </select>
   <select id="bySingalUniversity" resultMap="bySingalUniversityMap">
     SELECT
@@ -157,10 +154,10 @@ SELECT
       round(sum(flow_20_count)/sum(add_count),2) as flow_20_rate,
       round(sum(assistant_count)/sum(add_count),2) as assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
-        and trim(university_code)=#{universityCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
              university_name,
@@ -179,14 +176,14 @@ SELECT
       round(sum(assistant_count)/sum(add_count),2) as acc_assistant_rate,
       round(sum(crm_count)/sum(add_count),2) as acc_crm_rate,
       round(sum(add_count)/sum(plan_count)) as acc_new_rate
-    FROM tb_mk_2019_school_prom_report_list_hour
+    FROM tb_university_accumulate_current_date_hour
     WHERE
-        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_mk_2019_school_prom_report_list_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
-        and trim(university_code)=#{universityCode}
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_accumulate_current_date_hour) else CAST(to_char(to_date(#{dataTime}||'','yyyymmdd')::timestamp + '1 day','yyyymmdd')||'00' as bigint) end)
+        and university_code=#{universityCode}
     GROUP BY data_time,
              university_code,
              university_name
-) b ON a.data_time=b.data_time and trim(a.university_code)=trim(b.university_code) LEFT JOIN  (
+) b ON a.data_time=b.data_time and a.university_code=b.university_code LEFT JOIN  (
 SELECT
       statis_day,
       university_code,
@@ -196,13 +193,13 @@ SELECT
       round(sum(communicate_count)/sum(add_count),2) as qa_communicate_rate,
       round(sum(circle_count)/sum(add_count),2) as qa_circle_rate,
       round(sum(new_count)/sum(add_count),2) as qa_new_rate
-    FROM tb_mk_2019_school_prom_info_list_day
+    FROM tb_university_qa_day
     WHERE
-        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_info_list_day) else #{dataTime} end)
-        and trim(university_code)=#{universityCode}
+        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_university_qa_day) else #{dataTime} end)
+        and university_code=#{universityCode}
     GROUP BY statis_day,
              university_code,
              university_name
-) c ON trim(b.university_code)=trim(c.university_code)
+) c ON b.university_code=c.university_code
   </select>
 </mapper>

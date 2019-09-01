@@ -88,8 +88,8 @@
           yd_rate,
           dx_rate,
           lt_rate
-      FROM tb_school_2019_moni_college_result WHERE statis_day= (SELECT MAX(statis_day) FROM tb_school_2019_moni_college_result) AND
-      trim(area_code)=#{areaCode}
+      FROM tb_university_big_data_un_day WHERE statis_day= (SELECT MAX(statis_day) FROM tb_university_big_data_un_day) AND
+      area_code=#{areaCode}
   </select>
   <select id="byUniversityForApp" resultMap="byUniversityForAppMap">
       SELECT
@@ -108,9 +108,9 @@
           cnt_xinwen,
           cnt_yinyue,
           cnt_youxi
-      FROM tb_school_2019_moni_college_result WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_college_result) else #{statisDay} end) and
-      trim(area_code)=#{areaCode}
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
   </select>
   <select id="byUniversityForKeyMan" resultMap="byUniversityForKeyManMap">
       SELECT
@@ -119,12 +119,12 @@
           university_name,
           key_man_count,
           self_key_man_count,
-          round(cast(penetration_rate as numeric),2) as penetration_rate,
+          penetration_rate,
           add_count,
           renewal_count
-      FROM tb_school_2019_moni_college_result WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_college_result) else #{statisDay} end) and
-      trim(area_code)=#{areaCode}
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
   </select>
   <select id="byUniversityForRetention" resultMap="byUniversityForRetentionMap">
       SELECT
@@ -134,8 +134,8 @@
           open_count,
           exceed_3days_count,
           long_period_count
-      FROM tb_school_2019_moni_college_result WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_school_2019_moni_college_result) else #{statisDay} end) and
-      trim(area_code)=#{areaCode}
+      FROM tb_university_big_data_un_day WHERE
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_big_data_un_day) else #{statisDay} end) and
+      area_code=#{areaCode}
   </select>
 </mapper>

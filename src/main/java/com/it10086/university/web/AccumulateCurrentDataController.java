@@ -18,7 +18,7 @@ import java.util.Map;
 * Created by CodeGenerator on 2019/08/18.
 */
 @RestController
-@RequestMapping("/accumulateCurrentData")
+@RequestMapping("/accumulateCurrentDataOld")
 public class AccumulateCurrentDataController {
     @Resource
     private AccumulateCurrentDataService accumulateCurrentDataService;
