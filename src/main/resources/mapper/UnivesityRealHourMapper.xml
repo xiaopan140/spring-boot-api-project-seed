@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it10086.university.dao.UnivesityRealHourMapper">
+  <resultMap id="BaseResultMap" type="com.it10086.university.model.UnivesityRealHour">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="data_time" jdbcType="BIGINT" property="dataTime" />
+    <id column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <id column="university_code" jdbcType="VARCHAR" property="universityCode" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="university_name" jdbcType="VARCHAR" property="universityName" />
+    <result column="add_count" jdbcType="BIGINT" property="addCount" />
+    <result column="broadband_count" jdbcType="BIGINT" property="broadbandCount" />
+    <result column="renewal_count" jdbcType="BIGINT" property="renewalCount" />
+    <result column="package_count" jdbcType="BIGINT" property="packageCount" />
+    <result column="yung_card_count" jdbcType="BIGINT" property="yungCardCount" />
+    <result column="assistant_count" jdbcType="BIGINT" property="assistantCount" />
+    <result column="crm_count" jdbcType="BIGINT" property="crmCount" />
+    <result column="current_is_open" jdbcType="CHAR" property="currentIsOpen" />
+  </resultMap>
+  <resultMap id="byAreaMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="package_rate" property="packageRate" jdbcType="DOUBLE" />
+    <result column="yung_card_rate" property="yungCardRate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+  </resultMap>
+
+  <resultMap id="byUniversityMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="current_is_open" property="currentIsOpen" jdbcType="VARCHAR" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="package_rate" property="packageRate" jdbcType="DOUBLE" />
+    <result column="yung_card_rate" property="yungCardRate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="bySingalUniversityMap" type="java.util.LinkedHashMap">
+    <result column="data_time" property="dataTime" jdbcType="BIGINT" />
+    <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
+    <result column="university_name" property="universityName" jdbcType="VARCHAR" />
+    <result column="add_count" property="addCount" jdbcType="BIGINT" />
+    <result column="broadband_count" property="broadbandCount" jdbcType="BIGINT" />
+    <result column="renewal_rate" property="renewalRate" jdbcType="DOUBLE" />
+    <result column="package_rate" property="packageRate" jdbcType="DOUBLE" />
+    <result column="yung_card_rate" property="yungCardRate" jdbcType="DOUBLE" />
+    <result column="assistant_rate" property="assistantRate" jdbcType="DOUBLE" />
+    <result column="crm_rate" property="crmRate" jdbcType="DOUBLE" />
+    <result column="statis_day" property="statisDay" jdbcType="BIGINT" />
+    <result column="acc_plan_count" property="accPlanCount" jdbcType="BIGINT" />
+    <result column="acc_add_count" property="accAddCount" jdbcType="BIGINT" />
+    <result column="acc_broadband_count" property="accBroadbandCount" jdbcType="BIGINT" />
+    <result column="acc_renewal_rate" property="accRenewalRate" jdbcType="DOUBLE" />
+    <result column="acc_package_rate" property="accPackageRate" jdbcType="DOUBLE" />
+    <result column="acc_yung_card_rate" property="accYungCardRate" jdbcType="DOUBLE" />
+    <result column="acc_communicate_rate" jdbcType="DOUBLE" property="accCommunicateRate" />
+    <result column="acc_circle_rate" jdbcType="DOUBLE" property="accCircleRate" />
+    <result column="acc_new_rate" property="accNewRate" jdbcType="DOUBLE" />
+    <result column="acc_assistant_rate" property="accAssistantRate" jdbcType="DOUBLE" />
+    <result column="acc_crm_rate" property="accCrmRate" jdbcType="DOUBLE" />
+  </resultMap>
+  <select id="byArea" resultMap="byAreaMap">
+    SELECT
+      data_time,
+      area_code,
+      area_name,
+      sum(add_count) as add_count,
+      sum(broadband_count) as broadband_count,
+      round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
+      round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+      round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
+      round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
+      round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
+    FROM tb_university_real_hour
+    WHERE
+        data_time=(select max(data_time) from tb_university_real_hour)
+        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+    GROUP BY data_time,
+             area_code,
+             area_name
+  </select>
+  <select id="byUniversity" resultMap="byUniversityMap">
+    SELECT
+      data_time,
+      university_code,
+      university_name,
+      current_is_open,
+      sum(add_count) as add_count,
+      sum(broadband_count) as broadband_count,
+      round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
+      round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+      round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
+      round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
+      round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
+    FROM tb_university_real_hour
+    WHERE
+        data_time=(select max(data_time) from tb_university_real_hour)
+      and trim(area_code)=#{areaCode}
+    GROUP BY data_time,
+             university_code,
+             university_name,
+             current_is_open
+    ORDER BY current_is_open DESC
+  </select>
+  <select id="bySingalUniversity" resultMap="bySingalUniversityMap">
+    SELECT
+      a.data_time,
+      a.university_code,
+      a.university_name,
+      a.add_count,
+      a.broadband_count,
+      a.renewal_rate,
+      a.package_rate,
+      a.yung_card_rate,
+      a.assistant_rate,
+      a.crm_rate,
+      b.statis_day,
+      b.acc_plan_count,
+      b.acc_add_count,
+      b.acc_broadband_count,
+      b.acc_renewal_rate,
+      b.acc_package_rate,
+      b.acc_yung_card_rate,
+      b.acc_communicate_rate,
+      b.acc_circle_rate,
+      b.acc_new_rate,
+      b.acc_assistant_rate,
+      b.acc_crm_rate
+    FROM (
+           SELECT
+             data_time,
+             university_code,
+             university_name,
+             sum(add_count) as add_count,
+             sum(broadband_count) as broadband_count,
+             round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
+             round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+             round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
+             round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
+             round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
+           FROM tb_university_real_hour
+           WHERE
+               data_time=(select max(data_time) from tb_university_real_hour)
+             and trim(university_code)=#{universityCode}
+           GROUP BY data_time,
+                    university_code,
+                    university_name
+        ) a LEFT JOIN (
+      SELECT
+        statis_day,
+        university_code,
+        sum(plan_count) as acc_plan_count,
+        sum(add_count) as acc_add_count,
+        sum(broadband_count) as acc_broadband_count,
+        round(sum(renewal_count)/sum(add_count),2)*100 as acc_renewal_rate,
+        round(sum(package_count)/sum(add_count),2)*100 as acc_package_rate,
+        round(sum(yung_card_count)/sum(add_count),2)*100 as acc_yung_card_rate,
+        round(sum(communicate_count)/sum(add_count),2)*100 as acc_communicate_rate,
+        round(sum(circle_count)/sum(add_count),2)*100 as acc_circle_rate,
+        round(sum(add_count)/sum(plan_count),2)*100 as acc_new_rate,
+        round(sum(assistant_count)/sum(add_count),2)*100 as acc_assistant_rate,
+        round(sum(crm_count)/sum(add_count),2)*100 as acc_crm_rate
+      FROM tb_university_accumunate_byuniversity_day
+      WHERE
+          statis_day=(select max(statis_day) from tb_university_accumunate_byuniversity_day)
+        and trim(university_code)=#{universityCode}
+      GROUP BY statis_day,university_code
+    ) b ON trim(a.university_code)=trim(b.university_code)
+  </select>
+</mapper>
