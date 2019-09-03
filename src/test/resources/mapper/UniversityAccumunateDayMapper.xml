@@ -20,7 +20,7 @@
     <result column="university_name" jdbcType="VARCHAR" property="universityName" />
     <result column="plan_count" jdbcType="BIGINT" property="planCount" />
     <result column="add_count" jdbcType="BIGINT" property="addCount" />
-    <result column="broadband_count" jdbcType="BIGINT" property="preposeCount" />
+    <result column="broadband_count" jdbcType="BIGINT" property="broadbandCount" />
     <result column="renewal_rate" jdbcType="DOUBLE" property="renewalRate" />
     <result column="communicate_rate" jdbcType="DOUBLE" property="communicateRate" />
     <result column="circle_rate" jdbcType="DOUBLE" property="circleRate" />
@@ -39,11 +39,10 @@
       round(sum(communicate_count)/sum(cust_count),2)*100 as communicate_rate,
       round(sum(circle_count)/sum(cust_count),2)*100 as circle_rate,
       round(sum(division_region_count)/sum(cust_count),2)*100 as division_region_rate
-    FROM tb_mk_2019_school_prom_notify_day
+    FROM ia.tb_university_accumunate_byarea_day
     WHERE
-        statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_notify_day) else #{statisDay} end)
-      and area_name is not null
-      and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
+        statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_accumunate_byarea_day) else #{statisDay} end)
+        and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
     GROUP BY statis_day,
              area_code,
              area_name
@@ -60,9 +59,9 @@
       round(sum(communicate_count)/sum(add_count),2)*100 as communicate_rate,
       round(sum(circle_count)/sum(add_count),2)*100 as circle_rate,
       round(sum(new_count)/sum(add_count),2)*100 as new_rate
-    FROM tb_mk_2019_school_prom_report_list_day
+    FROM tb_university_accumunate_byuniversity_day
     WHERE
-      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_report_list_day) else #{statisDay} end)
+      statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_university_accumunate_byuniversity_day) else #{statisDay} end)
       and area_code=#{areaCode}
     GROUP BY statis_day,
              university_code,

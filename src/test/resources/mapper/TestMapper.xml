@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it10086.university.dao.TestMapper">
+  <resultMap id="BaseResultMap" type="com.it10086.university.model.Test">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <resultMap id="GroupTest" type="com.it10086.university.model.GroupTest">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+<!--    <id column="name" jdbcType="VARCHAR" property="name" />-->
+    <id column="cnt" jdbcType="BIGINT" property="cnt" />
+  </resultMap>
+  <!--聚合测试-->
+  <select id="groupTest" resultMap="GroupTest" parameterType="Integer">
+    SELECT id,count(1) AS cnt FROM TEST WHERE id=#{id} GROUP BY id
+  </select>
+</mapper>

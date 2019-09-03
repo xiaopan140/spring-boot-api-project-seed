@@ -50,7 +50,7 @@
   </resultMap>
   <select id="byArea" resultMap="byAreaMap">
     SELECT
-     statis_day data_time,
+      data_time,
       area_code,
       area_name,
       sum(plan_count) as plan_count,
@@ -62,9 +62,9 @@
       round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
       round(sum(crm_count)/sum(add_count),2)*100 as crm_rate,
       round(sum(add_count)/sum(plan_count),2)*100 as new_rate
-    FROM tb_mk_2019_school_prom_report_day
+    FROM tb_university_day
     WHERE
-        statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_report_day) else #{dataTime} end)
+        data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_day) else #{dataTime} end)
       and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
     GROUP BY data_time,
              area_code,
@@ -72,7 +72,7 @@
   </select>
   <select id="byUniversity" resultMap="byUniversityMap">
     SELECT
-      statis_day data_time,
+      data_time,
       university_code,
       university_name,
       sum(plan_count) as plan_count,
@@ -84,9 +84,9 @@
       round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
       round(sum(crm_count)/sum(add_count),2)*100 as crm_rate,
       round(sum(add_count)/sum(plan_count),2)*100 as new_rate
-    FROM tb_mk_2019_school_prom_report_day
+    FROM tb_university_day
     WHERE
-      statis_day=(case when #{dataTime}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_report_day) else #{dataTime} end)
+      data_time=(case when #{dataTime}=-1 then (select max(data_time) from tb_university_day) else #{dataTime} end)
       and trim(area_code)=#{areaCode}
     GROUP BY data_time,
              university_code,

@@ -77,15 +77,13 @@
       sum(add_count) as add_count,
       sum(broadband_count) as broadband_count,
       round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
-      round(sum(flow_30_count)/sum(add_count),2)*100 as package_rate,
---       round(sum(package_count)/sum(add_count),2)*100 as package_rate,
-      round(sum(flow_20_count)/sum(add_count),2)*100 as yung_card_rate,
---       round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
+      round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+      round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
       round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
       round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_real_hour
     WHERE
-        data_time=(select max(data_time) from tb_mk_2019_school_prom_report_hour)
+        data_time=(select max(data_time) from tb_university_real_hour)
         and (case when #{authCode}='-1' then '-1'='-1' else trim(area_code)=#{authCode} end)
     GROUP BY data_time,
              area_code,
@@ -100,15 +98,13 @@
       sum(add_count) as add_count,
       sum(broadband_count) as broadband_count,
       round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
-     -- round(sum(package_count)/sum(add_count),2)*100 as package_rate,
-      round(sum(flow_30_count)/sum(add_count),2)*100 as package_rate,
-      --round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
-      round(sum(flow_20_count)/sum(add_count),2)*100 as yung_card_rate,
+      round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+      round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
       round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
       round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
-    FROM tb_mk_2019_school_prom_report_hour
+    FROM tb_university_real_hour
     WHERE
-        data_time=(select max(data_time) from tb_mk_2019_school_prom_report_hour)
+        data_time=(select max(data_time) from tb_university_real_hour)
       and trim(area_code)=#{areaCode}
     GROUP BY data_time,
              university_code,
@@ -148,15 +144,13 @@
              sum(add_count) as add_count,
              sum(broadband_count) as broadband_count,
              round(sum(renewal_count)/sum(add_count),2)*100 as renewal_rate,
-             --round(sum(package_count)/sum(add_count),2)*100 as package_rate,
-             round(sum(flow_30_count)/sum(add_count),2)*100 as package_rate,
-             --round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
-             round(sum(flow_20_count)/sum(add_count),2)*100 as yung_card_rate,
+             round(sum(package_count)/sum(add_count),2)*100 as package_rate,
+             round(sum(yung_card_count)/sum(add_count),2)*100 as yung_card_rate,
              round(sum(assistant_count)/sum(add_count),2)*100 as assistant_rate,
              round(sum(crm_count)/sum(add_count),2)*100 as crm_rate
-           FROM tb_mk_2019_school_prom_report_hour
+           FROM tb_university_real_hour
            WHERE
-               data_time=(select max(data_time) from tb_mk_2019_school_prom_report_hour)
+               data_time=(select max(data_time) from tb_university_real_hour)
              and trim(university_code)=#{universityCode}
            GROUP BY data_time,
                     university_code,
@@ -176,9 +170,9 @@
         round(sum(add_count)/sum(plan_count),2)*100 as acc_new_rate,
         round(sum(assistant_count)/sum(add_count),2)*100 as acc_assistant_rate,
         round(sum(crm_count)/sum(add_count),2)*100 as acc_crm_rate
-      FROM tb_mk_2019_school_prom_report_list_day
+      FROM tb_university_accumunate_byuniversity_day
       WHERE
-          statis_day=(select max(statis_day) from tb_mk_2019_school_prom_report_list_day)
+          statis_day=(select max(statis_day) from tb_university_accumunate_byuniversity_day)
         and trim(university_code)=#{universityCode}
       GROUP BY statis_day,university_code
     ) b ON trim(a.university_code)=trim(b.university_code)
