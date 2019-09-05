@@ -63,7 +63,7 @@
     FROM tb_mk_2019_school_prom_report_list_day
     WHERE
       statis_day=(case when #{statisDay}=-1 then (select max(statis_day) from tb_mk_2019_school_prom_report_list_day) else #{statisDay} end)
-      and area_code=#{areaCode}
+      and trim(area_code)=#{areaCode}
     GROUP BY statis_day,
              university_code,
              university_name
